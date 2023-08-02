@@ -20,7 +20,7 @@ namespace controle_de_permissoes.Models.DB.Map {
             builder.Property(pp => pp.Id).HasColumnName("ID");
             builder.Property(pp => pp.PerfilId).HasColumnName("ID_Perfil");
             builder.Property(pp => pp.PermissaoId).HasColumnName("ID_Permissao");
-            builder.Property(pp => pp.DataHora).HasColumnName("DataHora");
+            builder.Property(pp => pp.DataHora).HasColumnName("DataHora").HasColumnType("datetime");
             builder.Property(pp => pp.Excluido).HasColumnName("Excluido");
 
             builder.Ignore(pp => pp.Permissao);

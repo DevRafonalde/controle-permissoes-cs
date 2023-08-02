@@ -22,13 +22,13 @@ namespace controle_de_permissoes.Models.DB.Map {
                    .HasForeignKey(up => up.PermissaoId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Property(up => up.Id).HasColumnName("ID").HasColumnOrder(1);
-            builder.Property(up => up.UsuarioId).HasColumnName("ID_Usuario").HasColumnOrder(2);
-            builder.Property(up => up.PerfilId).HasColumnName("ID_Perfil").HasColumnOrder(3);
-            builder.Property(up => up.PermissaoId).HasColumnName("ID_Permissao").HasColumnOrder(4);
-            builder.Property(up => up.Negacao).HasColumnName("Negacao").HasColumnOrder(5);
-            builder.Property(up => up.DataHora).HasColumnName("DataHora").HasColumnType("datetime").HasColumnOrder(6);
-            builder.Property(up => up.Excluido).HasColumnName("Excluido").HasColumnOrder(7);
+            builder.Property(up => up.Id).HasColumnName("ID");
+            builder.Property(up => up.UsuarioId).HasColumnName("ID_Usuario");
+            builder.Property(up => up.PerfilId).HasColumnName("ID_Perfil");
+            builder.Property(up => up.PermissaoId).HasColumnName("ID_Permissao");
+            builder.Property(up => up.Negacao).HasColumnName("Negacao");
+            builder.Property(up => up.DataHora).HasColumnName("DataHora").HasColumnType("datetime");
+            builder.Property(up => up.Excluido).HasColumnName("Excluido");
 
             builder.Ignore(up => up.Usuario);
             builder.Ignore(up => up.Perfil);

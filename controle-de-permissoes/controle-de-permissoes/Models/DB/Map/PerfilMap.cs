@@ -13,7 +13,7 @@ namespace controle_de_permissoes.Models.DB.Map {
 
             builder.Property(p => p.Id).HasColumnName("ID");
             builder.Property(p => p.SistemaId).HasColumnName("ID_Sistema");
-            builder.Property(p => p.Nome).HasColumnName("Nome");
+            builder.Property(p => p.Nome).HasColumnName("Nome").HasMaxLength(100);
             builder.Property(p => p.Descricao).HasColumnName("Descricao");
             builder.Property(p => p.Excluido).HasColumnName("Excluido");
 

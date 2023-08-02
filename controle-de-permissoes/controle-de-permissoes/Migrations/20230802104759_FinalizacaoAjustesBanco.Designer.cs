@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using controle_de_permissoes.Models.DB;
 
@@ -11,9 +12,11 @@ using controle_de_permissoes.Models.DB;
 namespace controle_de_permissoes.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    partial class BancoContextModelSnapshot : ModelSnapshot
+    [Migration("20230802104759_FinalizacaoAjustesBanco")]
+    partial class FinalizacaoAjustesBanco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,24 +144,23 @@ namespace controle_de_permissoes.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Descricao")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Descricao");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Nome");
 
                     b.Property<string>("Prefixo")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("Prefixo");
 
                     b.Property<string>("VersaoBanco")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("VersaoBanco");
 
                     b.HasKey("Id");

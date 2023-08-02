@@ -6,9 +6,9 @@
 
         public string Prefixo { get; set; }
 
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
 
-        public string VersaoBanco { get; set; }
+        public string? VersaoBanco { get; set; }
 
         public virtual List<Perfil>? Perfis { get; set; }
 

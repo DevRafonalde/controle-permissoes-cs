@@ -6,7 +6,7 @@
 
         public string Nome { get; set; }
 
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
 
         public bool GerarLog { get; set; }
 
@@ -14,7 +14,7 @@
 
         public bool Desabilitado { get; set; }
 
-        public string Mnemonico { get; set; }
+        public string? Mnemonico { get; set; }
 
         public Sistema? Sistema { get; set; }
 

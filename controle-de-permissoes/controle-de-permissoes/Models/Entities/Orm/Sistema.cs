@@ -1,5 +1,7 @@
-﻿namespace controle_de_permissoes.Models.Entities {
-    public class Sistema {
+﻿namespace controle_de_permissoes.Models.Entities.Orm
+{
+    public class Sistema
+    {
         public int Id { get; set; }
 
         public string Nome { get; set; }

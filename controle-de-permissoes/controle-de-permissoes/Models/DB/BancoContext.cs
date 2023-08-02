@@ -1,8 +1,9 @@
 ﻿using controle_de_permissoes.Models.DB.Map;
-using controle_de_permissoes.Models.Entities;
+using controle_de_permissoes.Models.Entities.Orm;
 using Microsoft.EntityFrameworkCore;
 
-namespace controle_de_permissoes.Models.DB {
+namespace controle_de_permissoes.Models.DB
+{
     public class BancoContext : DbContext {
         public BancoContext(DbContextOptions<BancoContext> options) : base(options) {
         }

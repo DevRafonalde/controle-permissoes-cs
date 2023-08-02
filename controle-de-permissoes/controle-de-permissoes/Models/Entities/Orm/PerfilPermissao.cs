@@ -1,8 +1,10 @@
-﻿namespace controle_de_permissoes.Models.Entities {
-    public class PerfilPermissao {
+﻿namespace controle_de_permissoes.Models.Entities.Orm
+{
+    public class PerfilPermissao
+    {
         public int Id { get; set; }
 
-        public int PerfilId { get; set;}
+        public int PerfilId { get; set; }
 
         public int PermissaoId { get; set; }
 

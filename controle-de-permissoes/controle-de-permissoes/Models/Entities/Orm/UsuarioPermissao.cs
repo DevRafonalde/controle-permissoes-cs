@@ -1,5 +1,7 @@
-﻿namespace controle_de_permissoes.Models.Entities {
-    public class UsuarioPermissao {
+﻿namespace controle_de_permissoes.Models.Entities.Orm
+{
+    public class UsuarioPermissao
+    {
         public int Id { get; set; }
 
         public int UsuarioId { get; set; }

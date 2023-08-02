@@ -1,5 +1,7 @@
-﻿namespace controle_de_permissoes.Models.Entities {
-    public class Permissao {
+﻿namespace controle_de_permissoes.Models.Entities.Orm
+{
+    public class Perfil
+    {
         public int Id { get; set; }
 
         public int? SistemaId { get; set; }
@@ -8,13 +10,7 @@
 
         public string? Descricao { get; set; }
 
-        public bool GerarLog { get; set; }
-
-        public int? IdPermissaoSuperior { get; set;}
-
-        public bool Desabilitado { get; set; }
-
-        public string? Mnemonico { get; set; }
+        public bool Excluido { get; set; }
 
         public Sistema? Sistema { get; set; }
 
@@ -22,8 +18,10 @@
 
         public virtual List<UsuarioPermissao>? UsuariosPermissao { get; set; }
 
-        public Sistema GetSistema() {
-            if (Sistema == null) {
+        public Sistema GetSistema()
+        {
+            if (Sistema == null)
+            {
                 Sistema sistemaVazio = new Sistema();
                 sistemaVazio.Nome = string.Empty;
                 return sistemaVazio;

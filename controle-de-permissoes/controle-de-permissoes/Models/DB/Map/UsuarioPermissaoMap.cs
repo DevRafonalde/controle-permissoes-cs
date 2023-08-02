@@ -1,8 +1,9 @@
-﻿using controle_de_permissoes.Models.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using controle_de_permissoes.Models.Entities.Orm;
 
-namespace controle_de_permissoes.Models.DB.Map {
+namespace controle_de_permissoes.Models.DB.Map
+{
     public class UsuarioPermissaoMap : IEntityTypeConfiguration<UsuarioPermissao> {
         public void Configure(EntityTypeBuilder<UsuarioPermissao> builder) {
             builder.HasKey(up => up.Id);

@@ -1,4 +1,6 @@
 using controle_de_permissoes.Models.DB;
+using controle_de_permissoes.Models.Repositories.Impl;
+using controle_de_permissoes.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,8 +13,12 @@ var provider = builder.Services.BuildServiceProvider();
 var configuration = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<BancoContext>(item => item.UseSqlServer(configuration.GetConnectionString("Database")));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-//builder.Services.AddScoped<IContatoRepository, ContatoRepository>();
-//builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<PerfilPermissaoRepository, PerfilPermissaoRepositoryImpl>();
+builder.Services.AddScoped<PerfilRepository, PerfilRepositoryImpl>();
+builder.Services.AddScoped<PermissaoRepository, PermissaoRepositoryImpl>();
+builder.Services.AddScoped<SistemaRepository, SistemaRepositoryImpl>();
+builder.Services.AddScoped<UsuarioPermissaoRepository, UsuarioPermissaoRepositoryImpl>();
+builder.Services.AddScoped<UsuarioRepository, UsuarioRepositoryImpl>();
 //builder.Services.AddScoped<ISessao, Sessao>();
 //builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddSession(o => {

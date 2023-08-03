@@ -1,0 +1,12 @@
+﻿@using controle_de_permissoes.Models.Entities.Orm;
+@model Usuario
+
+<div class="d-sm-inline-flex justify-content-between">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-completa" aria-expanded="true">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" asp-controller="Home" asp-action="Index">SI - Admin</a>
+    <div class="text-end">
+        <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" asp-controller="Home" asp-action="Index">Olá, @Model.NomeAmigavel</a>
+    </div>
+</div>

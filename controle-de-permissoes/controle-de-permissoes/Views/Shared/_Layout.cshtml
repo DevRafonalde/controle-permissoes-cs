@@ -7,29 +7,69 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/controle_de_permissoes.styles.css" asp-append-version="true" />
+    <link href="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.css" rel="stylesheet">
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">controle_de_permissoes</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <div class="d-sm-inline-flex justify-content-between">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-completa" aria-expanded="true">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" asp-controller="Home" asp-action="Index">SI - Admin</a>
+                    <div class="text-end">
+                        <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" asp-controller="Home" asp-action="Index">Olá, NOME</a>
+                    </div>
                 </div>
             </div>
-        </nav>
+        </div>
     </header>
+    <div class="navbar-collapse collapse flex-shrink-0 p-3 bg-white" style="width: 280px;" id="sidebar-completa">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+            <!--COLOCAR FOTO DO SI-ADMIN OU DO CARTÓRIO-->
+            <span class="fs-5 fw-semibold">SI - Admin</span>
+        </a>
+        <ul class="list-unstyled ps-0">
+            <li class="mb-1">
+                <a role="button" class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#permissoes-collapse" aria-expanded="true" asp-area="" asp-controller="Permissao" asp-action="Index">Permissões</a>
+                <div class="collapse show" id="permissoes-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a asp-area="" asp-controller="Permissao" asp-action="Cadastro" class="link-dark rounded">Cadastrar</a></li>
+                        <li><a asp-area="" asp-controller="Permissao" asp-action="Index" class="link-dark rounded">Listar</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="mb-1">
+                <a role="button" class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#perfis-collapse" aria-expanded="false" asp-area="" asp-controller="Perfil" asp-action="Index">Perfis</a>
+                <div class="collapse show" id="perfis-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a asp-area="" asp-controller="Perfil" asp-action="Cadastro" class="link-dark rounded">Cadastrar</a></li>
+                        <li><a asp-area="" asp-controller="Perfil" asp-action="Index" class="link-dark rounded">Listar</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="mb-1">
+                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#usuarios-collapse" aria-expanded="false" asp-area="" asp-controller="Usuario" asp-action="Index">Usuários</button>
+                <div class="collapse show" id="usuarios-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a asp-area="" asp-controller="Usuario" asp-action="Cadastro" class="link-dark rounded">Cadastrar</a></li>
+                        <li><a asp-area="" asp-controller="Usuario" asp-action="Index" class="link-dark rounded">Listar</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="border-top my-3"></li>
+            <li class="mb-1">
+                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#perfilUsuario-collapse" aria-expanded="false">Perfil</button>
+                <div class="collapse" id="perfilUsuario-collapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-dark rounded">Alterar Senha</a></li>
+                        <li><a href="#" class="link-dark rounded">Sair</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

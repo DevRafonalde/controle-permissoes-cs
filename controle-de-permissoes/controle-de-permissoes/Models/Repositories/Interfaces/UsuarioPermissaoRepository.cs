@@ -4,11 +4,12 @@ using controle_de_permissoes.Models.Entities.View;
 namespace controle_de_permissoes.Models.Repositories.Interfaces
 {
     public interface UsuarioPermissaoRepository {
-        Usuario Create(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil);
+        List<UsuarioPermissao> Create(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil);
         UsuarioPermissao ReadById(int id);
         List<UsuarioPermissao> ReadByUsuario(Usuario usuario);
+        List<UsuarioPermissao> ReadByPerfil(Perfil perfil);
         List<UsuarioPermissao> ReadAll();
-        Usuario Update(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil);
+        List<UsuarioPermissao> Update(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil);
         bool Delete(UsuarioPermissao usuarioPermissao);
     }
 }

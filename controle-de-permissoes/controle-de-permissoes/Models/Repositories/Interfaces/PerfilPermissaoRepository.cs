@@ -7,6 +7,7 @@ namespace controle_de_permissoes.Models.Repositories.Interfaces
         List<PerfilPermissao> Create(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao);
         PerfilPermissao ReadById(int id);
         List<PerfilPermissao> ReadByPerfil(Perfil perfil);
+        List<PerfilPermissao> ReadByPermissao(Permissao permissao);
         List<PerfilPermissao> ReadAll();
         List<PerfilPermissao> Update(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao);
         bool Delete(PerfilPermissao perfilPermissao);

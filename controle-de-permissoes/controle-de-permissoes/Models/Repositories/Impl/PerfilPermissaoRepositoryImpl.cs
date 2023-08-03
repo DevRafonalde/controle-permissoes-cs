@@ -17,11 +17,15 @@ namespace controle_de_permissoes.Models.Repositories.Impl
         }
 
         public List<PerfilPermissao> Create(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
-            List<Permissao> permissoes = modeloCadastroPerfilPermissao.PermissoesPerfil;
+            Perfil perfilNovo = modeloCadastroPerfilPermissao.Perfil;
+            perfilNovo.Excluido = false;
+            perfilRepository.Create(perfilNovo);
+
+            List<Permissao> permissoes = modeloCadastroPerfilPermissao.PermissoesSelecionadas;
             List <PerfilPermissao> registrosEfetuados = new();
             foreach (Permissao permissao in permissoes) {
                 PerfilPermissao perfilPermissao = new PerfilPermissao();
-                perfilPermissao.Perfil = modeloCadastroPerfilPermissao.Perfil;
+                perfilPermissao.Perfil = perfilNovo;
                 perfilPermissao.Perfil.Excluido = false;
                 perfilPermissao.DataHora = DateTime.Now;
                 perfilPermissao.Excluido = false;
@@ -43,7 +47,11 @@ namespace controle_de_permissoes.Models.Repositories.Impl
         }
 
         public List<PerfilPermissao> ReadByPerfil(Perfil perfil) {
-            return bancoContext.tbl_PerfilPermissao.Where(up => up.PerfilId == perfil.Id).ToList();
+            return bancoContext.tbl_PerfilPermissao.Where(pp => pp.PerfilId == perfil.Id).ToList();
+        }
+
+        public List<PerfilPermissao> ReadByPermissao(Permissao permissao) {
+            return bancoContext.tbl_PerfilPermissao.Where(pp => pp.PermissaoId == permissao.Id).ToList();
         }
 
         public List<PerfilPermissao> Update(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
@@ -56,7 +64,7 @@ namespace controle_de_permissoes.Models.Repositories.Impl
                 Delete(perfilPermissao);
             }
 
-            List<Permissao> permissoes = modeloCadastroPerfilPermissao.PermissoesPerfil;
+            List<Permissao> permissoes = modeloCadastroPerfilPermissao.PermissoesSelecionadas;
             List<PerfilPermissao> registrosEfetuados = new();
             foreach (Permissao permissao in permissoes) {
                 PerfilPermissao perfilPermissao = new PerfilPermissao();

@@ -45,19 +45,7 @@ namespace controle_de_permissoes.Models.Repositories.Impl
         }
 
         public Usuario Update(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
-            Usuario usuarioMexido = usuarioRepository.ReadById(modeloCadastroUsuarioPerfil.Usuario.Id);
-
-            if (usuarioMexido == null) {
-                throw new Exception("Houve um erro ao encontrar o usuário a ser editado");
-            }
-
-            usuarioMexido.NomeCompleto = modeloCadastroUsuarioPerfil.Usuario.NomeCompleto;
-            usuarioMexido.NomeAmigavel = modeloCadastroUsuarioPerfil.Usuario.NomeAmigavel;
-            usuarioMexido.NomeUser = modeloCadastroUsuarioPerfil.Usuario.NomeUser;
-            usuarioMexido.SenhaUser = modeloCadastroUsuarioPerfil.Usuario.SenhaUser;
-            usuarioMexido.CaixaVirtual = modeloCadastroUsuarioPerfil.Usuario.CaixaVirtual;
-            usuarioMexido.Observacao = modeloCadastroUsuarioPerfil.Usuario.Observacao;
-            usuarioMexido.Ativo = modeloCadastroUsuarioPerfil.Usuario.Ativo;
+            Usuario usuarioMexido = modeloCadastroUsuarioPerfil.Usuario;
             usuarioRepository.Update(usuarioMexido);
 
             List<UsuarioPermissao> registrosExistentes = ReadByUsuario(usuarioMexido);

@@ -1,12 +1,14 @@
 ﻿using controle_de_permissoes.Models.Entities.Orm;
+using controle_de_permissoes.Models.Entities.View;
 
 namespace controle_de_permissoes.Models.Repositories.Interfaces
 {
     public interface PerfilPermissaoRepository {
-        PerfilPermissao Create(PerfilPermissao perfilPermissao);
+        List<PerfilPermissao> Create(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao);
         PerfilPermissao ReadById(int id);
+        List<PerfilPermissao> ReadByPerfil(Perfil perfil);
         List<PerfilPermissao> ReadAll();
-        PerfilPermissao Update(PerfilPermissao perfilPermissao);
+        List<PerfilPermissao> Update(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao);
         bool Delete(PerfilPermissao perfilPermissao);
     }
 }

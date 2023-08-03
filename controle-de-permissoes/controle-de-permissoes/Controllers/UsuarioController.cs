@@ -17,19 +17,19 @@ namespace controle_de_permissoes.Controllers {
 
         // Página para listar todos os usuarios existentes
         public IActionResult Index() {
-            List<Usuario> usuarios = usuarioRepository.ReadAll();
+            List<Usuario> usuarios = usuarioRepository.ReadAll().Where(u => u.NomeAmigavel != null && u.NomeAmigavel != "" && u.Ativo == true).ToList();
             return View(usuarios);
         }
 
         // Página para o cadastro de novos usuarios
-        public IActionResult Cadastro() {
+        public IActionResult Cadastrar() {
             ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil = new ModeloCadastroUsuarioPerfil();
             modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
             return View(modeloCadastroUsuarioPerfil);
         }
 
         // Página para a edição de usuarios existentes
-        public IActionResult Edicao(int id) {
+        public IActionResult Editar(int id) {
             Usuario usuario = usuarioRepository.ReadById(id);
             List<Perfil> perfis = usuarioPermissaoRepository.ReadByUsuario(usuario).Select(up => up.Perfil).ToList();
 
@@ -60,7 +60,7 @@ namespace controle_de_permissoes.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Cadastro(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
+        public IActionResult Cadastrar(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
             try {
                 if (ModelState.IsValid) {
                     usuarioPermissaoRepository.Create(modeloCadastroUsuarioPerfil);
@@ -70,7 +70,7 @@ namespace controle_de_permissoes.Controllers {
                 return View(modeloCadastroUsuarioPerfil);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro no cadastro do usuário, entre em contato com o suporte." + erro.Message;
-                return RedirectToAction("Cadastro");
+                return RedirectToAction("Cadastrar");
             }
         }
 
@@ -85,7 +85,7 @@ namespace controle_de_permissoes.Controllers {
                 return View(modeloCadastroUsuarioPerfil);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro na edição do usuário, entre em contato com o suporte. " + erro.Message;
-                return RedirectToAction("Cadastro");
+                return RedirectToAction("Cadastrar");
             }
         }
 

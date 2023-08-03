@@ -11,81 +11,80 @@
     <link href="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/df900d0bb9.js" crossorigin="anonymous"></script>
 </head>
-<body>
-    <header class="p-3 mb-3 border-bottom bg-secondary">
+<body class="d-flex flex-column h-100">
+    <header class="p-3 mb-3 border-bottom">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <button class="navbar-toggler pull-left" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-completa" aria-controls="navbarText" aria-expanded="true" aria-label="Toggle navigation">
-                        <i class="fa-solid fa-bars fa-xl"></i>
-                    </button>
                     <a class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none navbar-brand" asp-controller="Home" asp-action="Index">SI - Admin</a>
-                    <div class="text-end">
-                        <a class="d-block link-dark text-decoration-none" asp-controller="Home" asp-action="Index">Olá, NOME</a>
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li class="nav-link px-2 link-dark">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-link px-2 link-dark dropdown">
+                            <a href="#" class="nav-link text-dark text-decoration-none dropdown-toggle" id="dropdownPermissoes" data-bs-toggle="dropdown" data-bs-target="#itensPermissoes" aria-expanded="false">Permissões</a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownPermissoes" id="itensPermissoes">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Permissao" asp-action="Index">Listar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Permissao" asp-action="Cadastro">Cadastrar</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-link px-2 link-dark dropdown">
+                            <a href="#" class="nav-link text-dark text-decoration-none dropdown-toggle" id="dropdownPermissoes" data-bs-toggle="dropdown" data-bs-target="#itensPermissoes" aria-expanded="false">Perfis</a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownPermissoes" id="itensPermissoes">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Perfil" asp-action="Index">Listar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Perfil" asp-action="Cadastro">Cadastrar</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-link px-2 link-dark dropdown">
+                            <a href="#" class="nav-link text-dark text-decoration-none dropdown-toggle" id="dropdownPermissoes" data-bs-toggle="dropdown" data-bs-target="#itensPermissoes" aria-expanded="false">Usuários</a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownPermissoes" id="itensPermissoes">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Usuario" asp-action="Index">Listar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Usuario" asp-action="Cadastrar">Cadastrar</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="dropdown text-end">
+                        <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownPerfil" data-bs-toggle="dropdown" data-bs-target="#itensPerfil" aria-expanded="false">NOME</a>
+                        <ul class="dropdown-menu text-small" aria-labelledby="dropdownPerfil" id="itensPerfil">
+                            <li>
+                                <a class="dropdown-item" asp-controller="AlterarSenha" asp-action="Index">Alterar Senha</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Login" asp-action="Logout">Sair</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-    <div class="navbar-collapse collapse flex-shrink-0 p-3 text-white bg-secondary" style="width: 280px; float: left;" id="sidebar-completa">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-            <!--COLOCAR FOTO DO SI-ADMIN OU DO CARTÓRIO-->
-            <span class="fs-5 fw-semibold">SI - Admin</span>
-        </a>
-        <ul class="list-unstyled ps-0">
-            <li class="mb-1">
-                <a role="button" class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#permissoes-collapse" aria-expanded="false">Permissões</a>
-                <div class="collapse" id="permissoes-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a asp-area="" asp-controller="Permissao" asp-action="Cadastro" class="link-dark rounded">Cadastrar</a></li>
-                        <li><a asp-area="" asp-controller="Permissao" asp-action="Index" class="link-dark rounded">Listar</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="mb-1">
-                <a role="button" class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#perfis-collapse" aria-expanded="false">Perfis</a>
-                <div class="collapse" id="perfis-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a asp-area="" asp-controller="Perfil" asp-action="Cadastro" class="link-dark rounded">Cadastrar</a></li>
-                        <li><a asp-area="" asp-controller="Perfil" asp-action="Index" class="link-dark rounded">Listar</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="mb-1">
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#usuarios-collapse" aria-expanded="false">Usuários</button>
-                <div class="collapse" id="usuarios-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a asp-area="" asp-controller="Usuario" asp-action="Cadastro" class="link-dark rounded">Cadastrar</a></li>
-                        <li><a asp-area="" asp-controller="Usuario" asp-action="Index" class="link-dark rounded">Listar</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="border-top my-3"></li>
-            <li class="mb-1">
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#perfilUsuario-collapse" aria-expanded="false">Perfil</button>
-                <div class="collapse" id="perfilUsuario-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-dark rounded">Alterar Senha</a></li>
-                        <li><a href="#" class="link-dark rounded">Sair</a></li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </div>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="flex-shrink-0">
             @RenderBody()
+            <br />
         </main>
     </div>
-
-    <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
             <p class="col-md-4 mb-0 text-muted">&copy; 2023 - SI - Admin</p>
             <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"></a>
-        </footer>
-    </div>
+        </div>
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.13.5/datatables.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,12 +1,12 @@
 ﻿@using controle_de_permissoes.Models.Entities.Orm;
-@model List<Usuario>
+@model List<Permissao>
 @{
-    ViewData["Title"] = "Listagem de Usuários";
+    ViewData["Title"] = "Listagem de Permissões";
 }
 
 <div class="container text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-        <a class="btn btn-primary" role="button" asp-controller="Usuario" asp-action="Cadastrar">Adicionar novo Usuário</a>
+        <a class="btn btn-primary" role="button" asp-controller="Perfil" asp-action="Cadastrar">Adicionar nova Permissão</a>
     </div>
     <br>
     @if (TempData["MensagemSucesso"] != null) {
@@ -25,32 +25,36 @@
         </div>
     }
     <br>
-    <h1 class="display-4">Listagem de Usuários</h1>
-    <table class="table table-striped table-hover" id="table-usuarios">
+    <h1 class="display-4">Listagem de Permissões</h1>
+    <table class="table table-striped table-hover" id="table-permissoes">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nome</th>
+                <th scope="col">Sistema</th>
+                <th scope="col">Permissão</th>
+                <th scope="col">Descrição</th>
                 <th scope="col">Ação</th>
             </tr>
         </thead>
         <tbody>
             @if (Model != null && Model.Any()) {
-                foreach (var usuario in Model) {
+                foreach (var perfil in Model) {
                     <tr>
-                        <th scope="row">@usuario.Id</th>
-                        <td><a></a> @usuario.NomeAmigavel</td>
+                        <th scope="row">@perfil.Id</th>
+                        <td><a></a> @perfil.GetSistema().Nome</td>
+                        <td><a></a> @perfil.Nome</td>
+                        <td><a></a> @perfil.Descricao</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Ações">
-                                <a role="button" class="btn btn-info btn-sm" asp-route-id="@usuario.Id" asp-controller="Usuario" asp-action="Editar"><i class="fa-solid fa-pencil"></i></a>
-                                <a role="button" class="btn btn-danger btn-sm" asp-route-id="@usuario.Id" asp-controller="Usuario" asp-action="ApagarConfirmacao"><i class="fa-regular fa-circle-xmark"></i></a>
+                                <a role="button" class="btn btn-info btn-sm" asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="Editar"><i class="fa-solid fa-pencil"></i></a>
+                                <a role="button" class="btn btn-danger btn-sm" asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="ApagarConfirmacao"><i class="fa-regular fa-circle-xmark"></i></a>
                             </div>
                         </td>
                     </tr>
                 }
             } else {
                 <tr class="odd">
-                    <td valign="top" colspan="3">Nenhum Usuário encontrado</td>
+                    <td valign="top" colspan="4">Nenhum Usuário encontrado</td>
                 </tr>
             }
         </tbody>

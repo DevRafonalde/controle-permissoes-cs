@@ -8,6 +8,7 @@ namespace controle_de_permissoes.Controllers {
         private readonly PermissaoRepository permissaoRepository;
         private readonly PerfilPermissaoRepository perfilPermissaoRepository;
         private readonly SistemaRepository sistemaRepository;
+        private readonly List<Sistema> todosSistemas;
 
         public PermissaoController(PermissaoRepository permissaoRepository, PerfilPermissaoRepository perfilPermissaoRepository, SistemaRepository sistemaRepository) {
             this.permissaoRepository = permissaoRepository;
@@ -18,6 +19,12 @@ namespace controle_de_permissoes.Controllers {
         // Página para listar todos as permissoes existentes
         public IActionResult Index() {
             List<Permissao> permissoes = permissaoRepository.ReadAll();
+
+            foreach (Permissao permissao in permissoes) {
+                Sistema sistema = sistemaRepository.ReadById(permissao.Id);
+                permissao.Sistema = sistema;
+            }
+
             return View(permissoes);
         }
 
@@ -54,7 +61,7 @@ namespace controle_de_permissoes.Controllers {
                 return View(permissao);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro no cadastro da permissao, entre em contato com o suporte." + erro.Message;
-                return RedirectToAction("Cadastro");
+                return RedirectToAction("Cadastrar");
             }
         }
 
@@ -70,7 +77,7 @@ namespace controle_de_permissoes.Controllers {
                 return View(permissao);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro na edição da permissao, entre em contato com o suporte. " + erro.Message;
-                return RedirectToAction("Cadastro");
+                return RedirectToAction("Cadastrar");
             }
         }
 

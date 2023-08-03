@@ -76,7 +76,7 @@ namespace controle_de_permissoes.Controllers {
                 return View(modeloCadastroPerfilPermissao);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro no cadastro do perfil, entre em contato com o suporte." + erro.Message;
-                return RedirectToAction("Cadastro");
+                return RedirectToAction("Cadastrar");
             }
         }
 
@@ -91,7 +91,7 @@ namespace controle_de_permissoes.Controllers {
                 return View(modeloCadastroPerfilPermissao);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro na edição do perfil, entre em contato com o suporte. " + erro.Message;
-                return RedirectToAction("Cadastro");
+                return RedirectToAction("Cadastrar");
             }
         }
 

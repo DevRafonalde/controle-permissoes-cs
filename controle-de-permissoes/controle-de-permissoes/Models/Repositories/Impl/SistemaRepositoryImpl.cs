@@ -14,5 +14,9 @@ namespace controle_de_permissoes.Models.Repositories.Impl
         public List<Sistema> ReadAll() {
             return bancoContext.tbl_Sistema.ToList();
         }
+
+        public Sistema ReadById(int id) {
+            return bancoContext.tbl_Sistema.FirstOrDefault(s => s.Id == id);
+        }
     }
 }

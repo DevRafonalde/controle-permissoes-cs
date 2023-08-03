@@ -24,8 +24,7 @@
 
         public virtual List<UsuarioPermissao>? UsuariosPermissao { get; set; }
 
-        public Sistema GetSistema()
-        {
+        public Sistema GetSistema() {
             if (Sistema == null)
             {
                 Sistema sistemaVazio = new Sistema();

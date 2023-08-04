@@ -28,6 +28,34 @@ namespace controle_de_permissoes.Controllers {
             return View(modeloCadastroUsuarioPerfil);
         }
 
+        [HttpPost]
+        public IActionResult AdicionarPerfil(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
+            if (modeloCadastroUsuarioPerfil.PerfisSelecionados == null) {
+                modeloCadastroUsuarioPerfil.setPerfisSelecionados(new List<Perfil>());
+            }
+            modeloCadastroUsuarioPerfil.addPerfisSelecionados(new Perfil());
+            foreach (Perfil perfil in modeloCadastroUsuarioPerfil.getPerfisSelecionados()) {
+                Console.WriteLine(perfil.Nome);
+            }
+            modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
+
+            return View("Cadastrar", modeloCadastroUsuarioPerfil);
+        }
+
+        [HttpPost]
+        public IActionResult RemoverPerfil(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil, int? removePerfil) {
+            if (removePerfil.HasValue) {
+                Console.WriteLine(removePerfil);
+                modeloCadastroUsuarioPerfil.PerfisSelecionados.RemoveAt(removePerfil.Value);
+            }
+            foreach (Perfil perfil in modeloCadastroUsuarioPerfil.getPerfisSelecionados()) {
+                Console.WriteLine(perfil.Nome);
+            }
+            modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
+
+            return View("Cadastrar", modeloCadastroUsuarioPerfil);
+        }
+
         // Página para a edição de usuarios existentes
         public IActionResult Editar(int id) {
             Usuario usuario = usuarioRepository.ReadById(id);

@@ -1,0 +1,77 @@
+﻿@using controle_de_permissoes.Models.Entities.View
+@model ModeloCadastroUsuarioPerfil
+@{
+    ViewData["Title"] = "Cadastro de novo Usuário";
+}
+
+<div class="container">
+    <h1 class="display-4">Cadastro de novo Usuário</h1>
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="nome-completo" class="form-label">Nome Completo:</label>
+                <input type="text" asp-for="Usuario.NomeCompleto" class="form-control" id="nome-completo" placeholder="Digite o nome completo">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.NomeCompleto)--->
+            </div>
+            <div class="col-md-6">
+                <label for="nome-amigavel" class="form-label">Nome Amigável:</label>
+                <input type="text" asp-for="Usuario.NomeAmigavel" class="form-control" id="nome-amigavel" placeholder="Digite o nome amigável">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.NomeAmigavel)-->
+            </div>
+            <div class="col-md-6">
+                <label for="nome-user" class="form-label">Nome de Usuário:</label>
+                <input type="text" asp-for="Usuario.NomeUser" class="form-control" id="nome-user" placeholder="Digite o nome de usuário">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.NomeUser)-->
+            </div>
+            <div class="col-md-6">
+                <label for="senha" class="form-label">Senha:</label>
+                <input type="text" asp-for="Usuario.SenhaUser" class="form-control" id="senha" placeholder="Digite uma senha">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.SenhaUser)-->
+            </div>
+            <div class="col-md-6">
+                <label for="observacao" class="form-label">Observação:</label>
+                <input type="text" asp-for="Usuario.Observacao" class="form-control" id="observacao" placeholder="Observação">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.Observacao)-->
+            </div>
+            <div class="col-md-6">
+                <label class="form-check-label" for="caixaVirtual">Caixa Virtual</label>
+                <input type="checkbox" asp-for="Usuario.CaixaVirtual" class="form-check-input" id="caixaVirtual" />
+                <!--@Html.ValidationMessageFor(x => x.Usuario.CaixaVirtual)-->
+            </div>
+        </div>
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Perfil</th>
+                        <th scope="col">
+                        <button class="btn btn-success" type="submit" formaction="/Usuario/AdicionarPerfil" formmethod="post">Adicionar Perfil</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for (int i = 0; i < (Model.PerfisSelecionados == null ? 0 : Model.PerfisSelecionados.Count()); i++) {
+                        <tr>
+                            <th scope="row">@(i + 1)</th>
+                            <td>
+                                <select asp-for="PerfisSelecionados[i]">
+                                    <option selected disabled value="">Selecione...</option>
+                                    @foreach (var perfil in Model.TodosPerfis) {
+                                        <option asp-value="@perfil.Id">@perfil.Nome</option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <input type="hidden" value="@i" name="removePerfil">
+                            <button class="btn btn-danger" type="submit" formaction="/Usuario/RemoverPerfil?removePerfil=@i" formmethod="post">Remover Perfil</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        <div class="d-grid gap-2">
+            <button type="submit" formaction="/Usuario/AdicionarPerfil" class="btn btn-primary">Adicionar</button>
+            <a class="btn btn-secondary" asp-controller="Usuario" asp-action="Index" role="button">Voltar</a>
+        </div>
+    </form>
+</div>

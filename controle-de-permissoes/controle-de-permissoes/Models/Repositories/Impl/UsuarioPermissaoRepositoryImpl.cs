@@ -15,27 +15,31 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             this.usuarioRepository = usuarioRepository;
         }
 
-        public List<UsuarioPermissao> Create(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
+        public int Create(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
             Usuario usuarioNovo = modeloCadastroUsuarioPerfil.Usuario;
             usuarioNovo.Ativo = true;
-            usuarioRepository.Create(usuarioNovo);
+            usuarioNovo = usuarioRepository.Create(usuarioNovo);
+            int idUsuario = usuarioNovo.Id;
 
             List<Perfil> perfis = modeloCadastroUsuarioPerfil.PerfisSelecionados;
             List<UsuarioPermissao> registrosEfetuados = new List<UsuarioPermissao>();
             foreach (Perfil perfil in perfis) {
                 UsuarioPermissao usuarioPermissao = new UsuarioPermissao();
-                usuarioPermissao.Usuario = modeloCadastroUsuarioPerfil.Usuario;
-                usuarioPermissao.Usuario.Ativo = true;
+                Console.WriteLine(usuarioNovo.Id);
+                idUsuario = usuarioNovo.Id;
+                //usuarioPermissao.Usuario = usuarioNovo;
+                usuarioPermissao.UsuarioId = usuarioNovo.Id;
                 usuarioPermissao.Negacao = false;
                 usuarioPermissao.DataHora = DateTime.Now;
                 usuarioPermissao.Excluido = false;
-                usuarioPermissao.Perfil = perfil;
-                registrosEfetuados.Add(usuarioPermissao);
+                //usuarioPermissao.Perfil = perfil;
+                usuarioPermissao.PerfilId = perfil.Id;
                 bancoContext.tbl_UsuarioPermissao.Add(usuarioPermissao);
+                registrosEfetuados.Add(usuarioPermissao);
             }
-            
+            Console.WriteLine("TESTE AQUI NO REPOSITÓRIO: " + idUsuario);
             bancoContext.SaveChanges();
-            return registrosEfetuados;
+            return idUsuario;
         }
 
         public List<UsuarioPermissao> ReadAll() {
@@ -48,6 +52,10 @@ namespace controle_de_permissoes.Models.Repositories.Impl
 
         public List<UsuarioPermissao> ReadByUsuario(Usuario usuario) {
             return bancoContext.tbl_UsuarioPermissao.Where(up => up.UsuarioId == usuario.Id).ToList();
+        }
+
+        public List<UsuarioPermissao> ReadByUsuarioId(int usuarioid) {
+            return bancoContext.tbl_UsuarioPermissao.Where(up => up.UsuarioId == usuarioid).ToList();
         }
 
         public List<UsuarioPermissao> ReadByPerfil(Perfil perfil) {

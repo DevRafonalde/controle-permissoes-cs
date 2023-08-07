@@ -97,7 +97,7 @@ $(document).ready(function () {
         carregarListaDePerfis()
     });
 
-    $('#formulario-cadastro').submit(function (event) {
+    $('#formulario-cadastro-usuario').submit(function (event) {
         event.preventDefault();
 
         var listaPerfisSelect = document.getElementsByClassName("perfil-selecionado");
@@ -125,6 +125,7 @@ $(document).ready(function () {
             contentType: "application/json",
             success: function (response) {
                 console.log("Requisição bem sucedida: ", response);
+                window.location.replace("https://localhost:7225/Usuario/ListagemEspecifica/" + response);
             },
             error: function (error) {
                 console.log("Erro na requisição: ", error);

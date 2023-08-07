@@ -6,7 +6,22 @@
 
 <div class="container">
     <h1 class="display-4">Cadastro de novo Usuário</h1>
-    <form id="formulario-cadastro">
+    @if (TempData["MensagemSucesso"] != null) {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check"></i>
+            <span><strong>@TempData["MensagemSucesso"]</strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check"></i>
+            <span><strong>@TempData["MensagemErro"]</strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <form id="formulario-cadastro-usuario">
         <div class="row">
             <div class="col-md-6">
                 <label for="nome-completo" class="form-label">Nome Completo:</label>

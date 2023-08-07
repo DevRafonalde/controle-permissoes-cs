@@ -23,9 +23,7 @@ namespace controle_de_permissoes.Controllers {
 
         // Página para o cadastro de novos usuarios
         public IActionResult Cadastrar() {
-            ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil = new ModeloCadastroUsuarioPerfil();
-            modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
-            return View(modeloCadastroUsuarioPerfil);
+            return View();
         }
 
         public IActionResult GetTodosPerfis() {
@@ -76,8 +74,13 @@ namespace controle_de_permissoes.Controllers {
 
         // Página para a listagem de perfis específica de cada usuario
         public IActionResult ListagemEspecifica(int id) {
+            Console.WriteLine("ID DA LISTAGEM ESPECIFICA: " + id);
             Usuario usuario = usuarioRepository.ReadById(id);
-            List<Perfil> perfis = usuarioPermissaoRepository.ReadByUsuario(usuario).Select(up => up.Perfil).ToList();
+            List<int?> perfisId = usuarioPermissaoRepository.ReadByUsuario(usuario).Select(up => up.PerfilId).ToList();
+            List<Perfil> perfis = new();
+            foreach (int perfilId in perfisId) {
+                perfis.Add(perfilRepository.ReadById(perfilId));
+            }
 
             ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil = new ModeloCadastroUsuarioPerfil();
             modeloCadastroUsuarioPerfil.Usuario = usuario;
@@ -93,16 +96,22 @@ namespace controle_de_permissoes.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
+        public IActionResult Cadastrar([FromBody] ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
             try {
                 if (ModelState.IsValid) {
-                    usuarioPermissaoRepository.Create(modeloCadastroUsuarioPerfil);
+                    List<Perfil> perfisSelecionados = new();
+                    foreach (int idPerfil in modeloCadastroUsuarioPerfil.PerfisSelecionadosIds) {
+                        perfisSelecionados.Add(perfilRepository.ReadById(idPerfil));
+                    }
+                    modeloCadastroUsuarioPerfil.setPerfisSelecionados(perfisSelecionados);
+                    int id = usuarioPermissaoRepository.Create(modeloCadastroUsuarioPerfil);
                     TempData["MensagemSucesso"] = "Usuário cadastrado com sucesso!";
-                    return RedirectToAction("ListagemEspecifica", modeloCadastroUsuarioPerfil.Usuario.Id);
+                    //return View("ListagemEspecifica", modeloCadastroUsuarioPerfil);
+                    return Ok(id);
                 }
                 return View(modeloCadastroUsuarioPerfil);
             } catch (Exception erro) {
-                TempData["MensagemErro"] = "Houve um erro no cadastro do usuário, entre em contato com o suporte." + erro.Message;
+                TempData["MensagemErro"] = "Houve um erro no cadastro do usuário, entre em contato com o suporte. " + erro.Message;
                 return RedirectToAction("Cadastrar");
             }
         }

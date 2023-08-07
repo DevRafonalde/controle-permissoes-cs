@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "Edição de Usuário";
 }
-
 <div class="container">
     <h1 class="display-4">Edição de Usuário</h1>
     @if (TempData["MensagemSucesso"] != null) {
@@ -13,7 +12,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-
     @if (TempData["MensagemErro"] != null) {
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fa-solid fa-check"></i>
@@ -40,7 +38,6 @@
                 <input type="text" asp-for="Usuario.NomeUser" class="form-control" id="nome-user" placeholder="Digite o nome de usuário">
                 <!--@Html.ValidationMessageFor(x => x.Usuario.NomeUser)-->
             </div>
-            
             <div class="col-md-6">
                 <label for="observacao" class="form-label">Observação:</label>
                 <input type="text" asp-for="Usuario.Observacao" class="form-control" id="observacao" placeholder="Observação">
@@ -48,12 +45,12 @@
             </div>
             <div class="col-md-6">
                 <label class="form-check-label" for="caixa-virtual">Caixa Virtual</label>
-                <input type="checkbox" asp-for="Usuario.CaixaVirtual" class="form-check-input" id="caixa-virtual" />
+                <input type="checkbox" asp-for="Usuario.CaixaVirtual" class="form-check-input" id="caixa-virtual">
                 <!--@Html.ValidationMessageFor(x => x.Usuario.CaixaVirtual)-->
             </div>
             <div class="col-md-6">
                 <label class="form-check-label" for="ativo">Ativo</label>
-                <input type="checkbox" asp-for="Usuario.Ativo" class="form-check-input" id="ativo" />
+                <input type="checkbox" asp-for="Usuario.Ativo" class="form-check-input" id="ativo">
                 <!--@Html.ValidationMessageFor(x => x.Usuario.Ativo)-->
             </div>
         </div>

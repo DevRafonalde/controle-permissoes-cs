@@ -28,6 +28,11 @@ namespace controle_de_permissoes.Controllers {
             return View(modeloCadastroUsuarioPerfil);
         }
 
+        public IActionResult GetTodosPerfis() {
+            List<Perfil> perfis = perfilRepository.ReadAll();
+            return Ok(perfis);
+        }
+
         [HttpPost]
         public IActionResult AdicionarPerfil(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
             if (modeloCadastroUsuarioPerfil.PerfisSelecionados == null) {

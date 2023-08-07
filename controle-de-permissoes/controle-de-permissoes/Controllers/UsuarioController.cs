@@ -8,11 +8,13 @@ namespace controle_de_permissoes.Controllers {
         private readonly UsuarioRepository usuarioRepository;
         private readonly PerfilRepository perfilRepository;
         private readonly UsuarioPermissaoRepository usuarioPermissaoRepository;
+        private readonly SistemaRepository sistemaRepository;
 
-        public UsuarioController(UsuarioRepository usuarioRepository, PerfilRepository perfilRepository, UsuarioPermissaoRepository usuarioPermissaoRepository) {
+        public UsuarioController(UsuarioRepository usuarioRepository, PerfilRepository perfilRepository, UsuarioPermissaoRepository usuarioPermissaoRepository, SistemaRepository sistemaRepository) {
             this.usuarioRepository = usuarioRepository;
             this.perfilRepository = perfilRepository;
             this.usuarioPermissaoRepository = usuarioPermissaoRepository;
+            this.sistemaRepository = sistemaRepository;
         }
 
         // Página para listar todos os usuarios existentes
@@ -31,55 +33,35 @@ namespace controle_de_permissoes.Controllers {
             return Ok(perfis);
         }
 
-        [HttpPost]
-        public IActionResult AdicionarPerfil(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
-            if (modeloCadastroUsuarioPerfil.PerfisSelecionados == null) {
-                modeloCadastroUsuarioPerfil.setPerfisSelecionados(new List<Perfil>());
-            }
-            modeloCadastroUsuarioPerfil.addPerfisSelecionados(new Perfil());
-            foreach (Perfil perfil in modeloCadastroUsuarioPerfil.getPerfisSelecionados()) {
-                Console.WriteLine(perfil.Nome);
-            }
-            modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
-
-            return View("Cadastrar", modeloCadastroUsuarioPerfil);
-        }
-
-        [HttpPost]
-        public IActionResult RemoverPerfil(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil, int? removePerfil) {
-            if (removePerfil.HasValue) {
-                Console.WriteLine(removePerfil);
-                modeloCadastroUsuarioPerfil.PerfisSelecionados.RemoveAt(removePerfil.Value);
-            }
-            foreach (Perfil perfil in modeloCadastroUsuarioPerfil.getPerfisSelecionados()) {
-                Console.WriteLine(perfil.Nome);
-            }
-            modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
-
-            return View("Cadastrar", modeloCadastroUsuarioPerfil);
-        }
-
         // Página para a edição de usuarios existentes
         public IActionResult Editar(int id) {
             Usuario usuario = usuarioRepository.ReadById(id);
-            List<Perfil> perfis = usuarioPermissaoRepository.ReadByUsuario(usuario).Select(up => up.Perfil).ToList();
+            Console.WriteLine(usuario.NomeAmigavel);
+            List<int?> perfisId = usuarioPermissaoRepository.ReadByUsuario(usuario).Select(up => up.PerfilId).ToList();
+            List<Perfil> perfis = new();
+            foreach (int perfilId in perfisId) {
+                Perfil perfil = perfilRepository.ReadById(perfilId);
+                perfil.Sistema = sistemaRepository.ReadById(perfil.GetSistemaId());
+                perfis.Add(perfil);
+            }
 
             ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil= new ModeloCadastroUsuarioPerfil();
             modeloCadastroUsuarioPerfil.TodosPerfis = perfilRepository.ReadAll();
             modeloCadastroUsuarioPerfil.Usuario = usuario;
-            modeloCadastroUsuarioPerfil.PerfisSelecionados = perfis;
+            modeloCadastroUsuarioPerfil.setPerfisSelecionados(perfis);
 
             return View(modeloCadastroUsuarioPerfil);
         }
 
         // Página para a listagem de perfis específica de cada usuario
         public IActionResult ListagemEspecifica(int id) {
-            Console.WriteLine("ID DA LISTAGEM ESPECIFICA: " + id);
             Usuario usuario = usuarioRepository.ReadById(id);
             List<int?> perfisId = usuarioPermissaoRepository.ReadByUsuario(usuario).Select(up => up.PerfilId).ToList();
             List<Perfil> perfis = new();
             foreach (int perfilId in perfisId) {
-                perfis.Add(perfilRepository.ReadById(perfilId));
+                Perfil perfil = perfilRepository.ReadById(perfilId);
+                perfil.Sistema = sistemaRepository.ReadById(perfil.GetSistemaId());
+                perfis.Add(perfil);
             }
 
             ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil = new ModeloCadastroUsuarioPerfil();
@@ -117,12 +99,17 @@ namespace controle_de_permissoes.Controllers {
         }
 
         [HttpPost]
-        public IActionResult EditarBanco(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
+        public IActionResult EditarBanco([FromBody] ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
             try {
                 if (ModelState.IsValid) {
-                    usuarioPermissaoRepository.Update(modeloCadastroUsuarioPerfil);
+                    List<Perfil> perfisSelecionados = new();
+                    foreach (int idPerfil in modeloCadastroUsuarioPerfil.PerfisSelecionadosIds) {
+                        perfisSelecionados.Add(perfilRepository.ReadById(idPerfil));
+                    }
+                    modeloCadastroUsuarioPerfil.setPerfisSelecionados(perfisSelecionados);
+                    int id = usuarioPermissaoRepository.Update(modeloCadastroUsuarioPerfil);
                     TempData["MensagemSucesso"] = "Usuário editado com sucesso!";
-                    return RedirectToAction("ListagemEspecifica", modeloCadastroUsuarioPerfil.Usuario.Id);
+                    return Ok(id);
                 }
                 return View(modeloCadastroUsuarioPerfil);
             } catch (Exception erro) {

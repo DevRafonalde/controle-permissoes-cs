@@ -25,19 +25,15 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             List<UsuarioPermissao> registrosEfetuados = new List<UsuarioPermissao>();
             foreach (Perfil perfil in perfis) {
                 UsuarioPermissao usuarioPermissao = new UsuarioPermissao();
-                Console.WriteLine(usuarioNovo.Id);
                 idUsuario = usuarioNovo.Id;
-                //usuarioPermissao.Usuario = usuarioNovo;
                 usuarioPermissao.UsuarioId = usuarioNovo.Id;
                 usuarioPermissao.Negacao = false;
                 usuarioPermissao.DataHora = DateTime.Now;
                 usuarioPermissao.Excluido = false;
-                //usuarioPermissao.Perfil = perfil;
                 usuarioPermissao.PerfilId = perfil.Id;
                 bancoContext.tbl_UsuarioPermissao.Add(usuarioPermissao);
                 registrosEfetuados.Add(usuarioPermissao);
             }
-            Console.WriteLine("TESTE AQUI NO REPOSITÓRIO: " + idUsuario);
             bancoContext.SaveChanges();
             return idUsuario;
         }
@@ -54,17 +50,14 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             return bancoContext.tbl_UsuarioPermissao.Where(up => up.UsuarioId == usuario.Id).ToList();
         }
 
-        public List<UsuarioPermissao> ReadByUsuarioId(int usuarioid) {
-            return bancoContext.tbl_UsuarioPermissao.Where(up => up.UsuarioId == usuarioid).ToList();
-        }
-
         public List<UsuarioPermissao> ReadByPerfil(Perfil perfil) {
             return bancoContext.tbl_UsuarioPermissao.Where(up => up.PerfilId == perfil.Id).ToList();
         }
 
-        public List<UsuarioPermissao> Update(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
+        public int Update(ModeloCadastroUsuarioPerfil modeloCadastroUsuarioPerfil) {
             Usuario usuarioMexido = modeloCadastroUsuarioPerfil.Usuario;
             usuarioRepository.Update(usuarioMexido);
+            int idUsuario = usuarioMexido.Id;
 
             List<UsuarioPermissao> registrosExistentes = ReadByUsuario(usuarioMexido);
             foreach (UsuarioPermissao usuarioPermissao in registrosExistentes) {
@@ -75,17 +68,18 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             List<UsuarioPermissao> registrosEfetuados = new List<UsuarioPermissao>();
             foreach (Perfil perfil in perfis) {
                 UsuarioPermissao usuarioPermissao = new UsuarioPermissao();
-                usuarioPermissao.Usuario = modeloCadastroUsuarioPerfil.Usuario;
+                idUsuario = usuarioMexido.Id;
+                usuarioPermissao.UsuarioId = usuarioMexido.Id;
                 usuarioPermissao.Negacao = false;
                 usuarioPermissao.DataHora = DateTime.Now;
                 usuarioPermissao.Excluido = false;
-                usuarioPermissao.Perfil = perfil;
-                registrosEfetuados.Add(usuarioPermissao);
+                usuarioPermissao.PerfilId = perfil.Id;
                 bancoContext.tbl_UsuarioPermissao.Add(usuarioPermissao);
+                registrosEfetuados.Add(usuarioPermissao);
             }
 
             bancoContext.SaveChanges();
-            return registrosEfetuados;
+            return idUsuario;
 
         }
 

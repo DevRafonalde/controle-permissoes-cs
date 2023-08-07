@@ -1,0 +1,98 @@
+﻿@using controle_de_permissoes.Models.Entities.View
+@model ModeloCadastroUsuarioPerfil
+@{
+    ViewData["Title"] = "Edição de Usuário";
+}
+
+<div class="container">
+    <h1 class="display-4">Edição de Usuário</h1>
+    @if (TempData["MensagemSucesso"] != null) {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check"></i>
+            <span><strong>@TempData["MensagemSucesso"]</strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check"></i>
+            <span><strong>@TempData["MensagemErro"]</strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <form id="formulario-edicao-usuario">
+        <input type="hidden" id="id" asp-for="Usuario.Id">
+        <input type="hidden" id="senha" asp-for="Usuario.SenhaUser">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="nome-completo" class="form-label">Nome Completo:</label>
+                <input type="text" asp-for="Usuario.NomeCompleto" class="form-control" id="nome-completo" placeholder="Digite o nome completo">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.NomeCompleto)--->
+            </div>
+            <div class="col-md-6">
+                <label for="nome-amigavel" class="form-label">Nome Amigável:</label>
+                <input type="text" asp-for="Usuario.NomeAmigavel" class="form-control" id="nome-amigavel" placeholder="Digite o nome amigável">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.NomeAmigavel)-->
+            </div>
+            <div class="col-md-6">
+                <label for="nome-user" class="form-label">Nome de Usuário:</label>
+                <input type="text" asp-for="Usuario.NomeUser" class="form-control" id="nome-user" placeholder="Digite o nome de usuário">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.NomeUser)-->
+            </div>
+            
+            <div class="col-md-6">
+                <label for="observacao" class="form-label">Observação:</label>
+                <input type="text" asp-for="Usuario.Observacao" class="form-control" id="observacao" placeholder="Observação">
+                <!--@Html.ValidationMessageFor(x => x.Usuario.Observacao)-->
+            </div>
+            <div class="col-md-6">
+                <label class="form-check-label" for="caixa-virtual">Caixa Virtual</label>
+                <input type="checkbox" asp-for="Usuario.CaixaVirtual" class="form-check-input" id="caixa-virtual" />
+                <!--@Html.ValidationMessageFor(x => x.Usuario.CaixaVirtual)-->
+            </div>
+            <div class="col-md-6">
+                <label class="form-check-label" for="ativo">Ativo</label>
+                <input type="checkbox" asp-for="Usuario.Ativo" class="form-check-input" id="ativo" />
+                <!--@Html.ValidationMessageFor(x => x.Usuario.Ativo)-->
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Perfil</th>
+                    <th scope="col">
+                        <a class="btn btn-success" id="adicionar-perfil">Adicionar Perfil</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="selecao-perfis">
+                <!--Os campos de select daqui são inseridos via javascript-->
+                @for (int i = 0; i < Model.getPerfisSelecionados().Count; i++) {
+                    <tr id="select-@i">
+                        <th scope="row">@(i + 1)</th>
+                        <td>
+                            <select class="perfil-selecionado form-select" asp-for="PerfisSelecionados[i]">
+                                <option value="">Selecione um perfil...</option>
+                                @foreach (var perfil in Model.TodosPerfis) {
+                                    if (Model.PerfisSelecionados[i].Id == perfil.Id) {
+                                        <option selected value="@perfil.Id">@perfil.Nome</option>
+                                    }
+                                    <option value="@perfil.Id">@perfil.Nome</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" onclick="removerPerfil(@i);">Remover Perfil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Alterar</button>
+            <a class="btn btn-secondary" asp-controller="Usuario" asp-action="Index" role="button">Voltar</a>
+        </div>
+    </form>
+</div>

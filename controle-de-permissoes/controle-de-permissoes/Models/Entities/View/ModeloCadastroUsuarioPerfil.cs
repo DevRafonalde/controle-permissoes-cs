@@ -17,9 +17,5 @@ namespace controle_de_permissoes.Models.Entities.View {
         public void setPerfisSelecionados(List<Perfil> perfis) {
             PerfisSelecionados = perfis;
         }
-
-        public void addPerfisSelecionados(Perfil perfil) {
-            PerfisSelecionados.Add(perfil);
-        }
     }
 }

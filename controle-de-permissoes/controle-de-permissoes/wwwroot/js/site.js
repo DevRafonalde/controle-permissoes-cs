@@ -93,6 +93,12 @@ $(document).ready(function () {
         });
     }
 
+    function preencherPerfis(qntdPerfis) {
+        for (var i = 0; i < qntdPerfis; i++) {
+            carregarListaDePerfis();
+        }
+    }
+
     $("#adicionar-perfil").click(function () {
         carregarListaDePerfis()
     });
@@ -121,6 +127,44 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: "/Usuario/Cadastrar",
+            data: JSON.stringify(modeloCadastroUsuarioPerfil),
+            contentType: "application/json",
+            success: function (response) {
+                console.log("Requisição bem sucedida: ", response);
+                window.location.replace("https://localhost:7225/Usuario/ListagemEspecifica/" + response);
+            },
+            error: function (error) {
+                console.log("Erro na requisição: ", error);
+            }
+        });
+    });
+
+    $('#formulario-edicao-usuario').submit(function (event) {
+        event.preventDefault();
+
+        var listaPerfisSelect = document.getElementsByClassName("perfil-selecionado");
+
+        for (var i = 0; i < listaPerfisSelect.length; i++) {
+            listaPerfisSelecionados.push(listaPerfisSelect[i].value);
+        }
+
+        var modeloCadastroUsuarioPerfil = {
+            Usuario: {
+                Id: $('#id').val(),
+                NomeCompleto: $('#nome-completo').val(),
+                NomeAmigavel: $('#nome-amigavel').val(),
+                NomeUser: $('#nome-user').val(),
+                SenhaUser: $('#senha').val(),
+                Observacao: $('#observacao').val(),
+                CaixaVirtual: $('#caixa-virtual').is(":checked"),
+                Ativo: $('#ativo').is(":checked")
+            },
+            PerfisSelecionadosIds: listaPerfisSelecionados
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Usuario/EditarBanco",
             data: JSON.stringify(modeloCadastroUsuarioPerfil),
             contentType: "application/json",
             success: function (response) {

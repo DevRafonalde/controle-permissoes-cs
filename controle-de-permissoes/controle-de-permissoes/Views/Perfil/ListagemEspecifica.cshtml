@@ -1,12 +1,12 @@
-﻿@using controle_de_permissoes.Models.Entities.Orm;
-@model List<Perfil>
+﻿@using controle_de_permissoes.Models.Entities.View;
+@model ModeloCadastroPerfilPermissao
 @{
-    ViewData["Title"] = "Listagem de Perfis";
+    ViewData["Title"] = "SI-Admin / Listagem Específica";
 }
 
-<div class="container text-center">
+<div class="container">
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-        <a class="btn btn-primary" role="button" asp-controller="Perfil" asp-action="Cadastrar">Adicionar novo Perfil</a>
+        <a class="btn btn-primary" role="button" asp-controller="Usuario" asp-action="Cadastrar">Adicionar novo Usuário</a>
     </div>
     <br>
     @if (TempData["MensagemSucesso"] != null) {
@@ -16,7 +16,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-
     @if (TempData["MensagemErro"] != null) {
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <i class="fa-solid fa-check"></i>
@@ -24,33 +23,35 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-    <br>
-    <h1 class="display-4">Listagem de Perfis</h1>
-    <table class="table table-striped table-hover" id="table-perfis">
+    <h1 class="display-4 text-center">Perfil @Model.Perfil.Nome</h1>
+    <table class="table table-striped table-hover" id="table-usuarios">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Nome</th>
+                <th scope="col">Sistema</th>
+                <th scope="col">Perfil</th>
+                <th scope="col">Descrição</th>
                 <th scope="col">Ação</th>
             </tr>
         </thead>
         <tbody>
-            @if (Model != null && Model.Any()) {
-                foreach (var perfil in Model) {
+            @if (Model != null && Model.PermissoesSelecionadas.Any()) {
+                foreach (var permissao in Model.PermissoesSelecionadas) {
                     <tr>
-                        <th scope="row">@perfil.Id</th>
-                        <td><a asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="ListagemEspecifica">@perfil.Nome</a></td>
+                        <th scope="row">@permissao.Id</th>
+                        <td>@permissao.GetSistema().Nome</td>
+                        <td>@permissao.Nome</td>
+                        <td>@permissao.Descricao</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Ações">
-                                <a role="button" class="btn btn-info btn-sm" asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="Editar"><i class="fa-solid fa-pencil"></i></a>
-                                <a role="button" class="btn btn-danger btn-sm" asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="ApagarConfirmacao"><i class="fa-regular fa-circle-xmark"></i></a>
+                                <a role="button" class="btn btn-danger btn-sm" asp-route-id="@permissao.Id" asp-controller="Usuario" asp-action="ApagarConfirmacao"><i class="fa-regular fa-circle-xmark"></i></a>
                             </div>
                         </td>
                     </tr>
                 }
             } else {
                 <tr class="odd">
-                    <td valign="top" colspan="3">Nenhum Usuário encontrado</td>
+                    <td valign="top" colspan="5">Nenhum Perfil encontrado</td>
                 </tr>
             }
         </tbody>

@@ -33,5 +33,12 @@
             }
             return Sistema;
         }
+
+        public int GetSistemaId() {
+            if (SistemaId == null) {
+                return 0;
+            }
+            return (int) SistemaId;
+        }
     }
 }

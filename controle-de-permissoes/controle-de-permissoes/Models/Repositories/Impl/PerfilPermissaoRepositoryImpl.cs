@@ -16,26 +16,27 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             this.perfilRepository = perfilRepository;
         }
 
-        public List<PerfilPermissao> Create(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
+        public int Create(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
             Perfil perfilNovo = modeloCadastroPerfilPermissao.Perfil;
             perfilNovo.Excluido = false;
-            perfilRepository.Create(perfilNovo);
+            perfilNovo = perfilRepository.Create(perfilNovo);
+            int idPerfil = perfilNovo.Id;
 
             List<Permissao> permissoes = modeloCadastroPerfilPermissao.PermissoesSelecionadas;
             List <PerfilPermissao> registrosEfetuados = new();
             foreach (Permissao permissao in permissoes) {
                 PerfilPermissao perfilPermissao = new PerfilPermissao();
-                perfilPermissao.Perfil = perfilNovo;
-                perfilPermissao.Perfil.Excluido = false;
+                idPerfil = perfilNovo.Id;
+                perfilPermissao.PerfilId = perfilNovo.Id;
                 perfilPermissao.DataHora = DateTime.Now;
                 perfilPermissao.Excluido = false;
-                perfilPermissao.Permissao = permissao;
+                perfilPermissao.PermissaoId = permissao.Id;
                 registrosEfetuados.Add(perfilPermissao);
                 bancoContext.tbl_PerfilPermissao.Add(perfilPermissao);
             }
 
             bancoContext.SaveChanges();
-            return registrosEfetuados;
+            return idPerfil;
         }
 
         public List<PerfilPermissao> ReadAll() {
@@ -54,10 +55,11 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             return bancoContext.tbl_PerfilPermissao.Where(pp => pp.PermissaoId == permissao.Id).ToList();
         }
 
-        public List<PerfilPermissao> Update(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
+        public int Update(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
             Perfil perfilMexido = modeloCadastroPerfilPermissao.Perfil;
             perfilMexido.Excluido = false;
-            perfilRepository.Update(perfilMexido);
+            perfilMexido = perfilRepository.Update(perfilMexido);
+            int idPerfil = perfilMexido.Id;
 
             List<PerfilPermissao> registrosExistentes = ReadByPerfil(perfilMexido);
             foreach (PerfilPermissao perfilPermissao in registrosExistentes) {
@@ -68,16 +70,17 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             List<PerfilPermissao> registrosEfetuados = new();
             foreach (Permissao permissao in permissoes) {
                 PerfilPermissao perfilPermissao = new PerfilPermissao();
-                perfilPermissao.Perfil = perfilMexido;
+                idPerfil = perfilMexido.Id;
+                perfilPermissao.PerfilId = perfilMexido.Id;
                 perfilPermissao.DataHora = DateTime.Now;
                 perfilPermissao.Excluido = false;
-                perfilPermissao.Permissao = permissao;
+                perfilPermissao.PermissaoId = permissao.Id;
                 registrosEfetuados.Add(perfilPermissao);
                 bancoContext.tbl_PerfilPermissao.Add(perfilPermissao);
             }
 
             bancoContext.SaveChanges();
-            return registrosEfetuados;
+            return idPerfil;
         }
 
         public bool Delete(PerfilPermissao perfilPermissao) {

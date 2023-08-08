@@ -55,13 +55,20 @@ function setTraducaoDataTable(id) {
 // Código para funcionamento do envio dos formulários de cadastro
 
 var indexSelectPerfil = 0;
+var indexSelectPermissao = 0;
 function removerPerfil(id) {
     document.getElementById('select-' + id).remove();
     indexSelectPerfil--;
 }
 
+function removerPermissao(id) {
+    document.getElementById('select-' + id).remove();
+    indexSelectPermissao--;
+}
+
 $(document).ready(function () {
     var listaPerfisSelecionados = [];
+    var listaPermissoesSelecionadas = [];
 
     function carregarListaDePerfis() {
         $.ajax({
@@ -170,6 +177,73 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Requisição bem sucedida: ", response);
                 window.location.replace("https://localhost:7225/Usuario/ListagemEspecifica/" + response);
+            },
+            error: function (error) {
+                console.log("Erro na requisição: ", error);
+            }
+        });
+    });
+
+    function carregarListaDePermissoes() {
+        $.ajax({
+            type: "GET",
+            url: "/Perfil/GetTodasPermissoes",
+            success: function (permissoes) {
+                var selectOptions = permissoes.map(function (permissao) {
+                    return '<option value="' + permissao.id + '">' + permissao.nome + '</option>';
+                });
+                var novoSelect = '<tr id="select-' + indexSelectPermissao + '">'
+                    + '<th scope="row">' + (indexSelectPermissao + 1) + '</th>'
+                    + '<td>'
+                    + '<select class="permissao-selecionada form-select">'
+                    + '<option selected disabled value="">Selecione uma permissão...</option>'
+                    + selectOptions.join('')
+                    + '</select>'
+                    + '</td>'
+                    + '<td>'
+                    + '<a class="btn btn-danger" onclick="removerPermissao(' + indexSelectPermissao + ');">Remover Permissão</a>'
+                    + '</td>'
+                    + '</tr>';
+
+                $("#selecao-permissoes").append(novoSelect);
+                indexSelectPermissao++;
+            },
+            error: function (error) {
+                console.error("Erro ao carregar perfis:", error);
+            }
+        });
+    }
+
+    $("#adicionar-permissao").click(function () {
+        carregarListaDePermissoes()
+    });
+
+    $('#formulario-cadastro-perfil').submit(function (event) {
+        event.preventDefault();
+
+        var listaPermissoesSelect = document.getElementsByClassName("permissao-selecionada");
+
+        for (var i = 0; i < listaPermissoesSelect.length; i++) {
+            listaPermissoesSelecionadas.push(listaPermissoesSelect[i].value);
+        }
+
+        var modeloCadastroPerfilPermissao = {
+            Perfil: {
+                Nome: $('#nome').val(),
+                Descricao: $('#descricao').val(),
+                SistemaId: $('#sistema-id').val()
+            },
+            PermissoesSelecionadasIds: listaPermissoesSelecionadas
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Perfil/Cadastrar",
+            data: JSON.stringify(modeloCadastroPerfilPermissao),
+            contentType: "application/json",
+            success: function (response) {
+                console.log("Requisição bem sucedida: ", response);
+                window.location.replace("https://localhost:7225/Perfil/ListagemEspecifica/" + response);
             },
             error: function (error) {
                 console.log("Erro na requisição: ", error);

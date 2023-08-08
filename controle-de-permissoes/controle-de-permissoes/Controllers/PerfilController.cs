@@ -19,21 +19,27 @@ namespace controle_de_permissoes.Controllers {
             this.permissaoRepository = permissaoRepository;
         }
 
-        // Página para listar todos os perfis existentes
+        // Página para listar todos os permissoes existentes
         public IActionResult Index() {
             List<Perfil> perfis = perfilRepository.ReadAll();
             return View(perfis);
         }
 
-        // Página para o cadastro de novos perfis
-        public IActionResult Cadastro() {
+        // Página para o cadastro de novos permissoes
+        public IActionResult Cadastrar() {
+            Console.WriteLine("teste inicio cadastro get");
             ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao = new ModeloCadastroPerfilPermissao();
             modeloCadastroPerfilPermissao.TodosSistemas = sistemaRepository.ReadAll();
-            modeloCadastroPerfilPermissao.TodasPermissoes = permissaoRepository.ReadAll();
+            Console.WriteLine("teste fim cadastro get");
             return View(modeloCadastroPerfilPermissao);
         }
 
-        // Página para a edição de perfis existentes
+        public IActionResult GetTodasPermissoes() {
+            List<Permissao> permissoes = permissaoRepository.ReadAll();
+            return Ok(permissoes);
+        }
+
+        // Página para a edição de permissoes existentes
         public IActionResult Edicao(int id) {
             Perfil perfil = perfilRepository.ReadById(id);
             List<Permissao> permissoes = perfilPermissaoRepository.ReadByPerfil(perfil).Select(pp => pp.Permissao).ToList();
@@ -50,7 +56,14 @@ namespace controle_de_permissoes.Controllers {
         // Página para a listagem de permissões específica de cada perfil
         public IActionResult ListagemEspecifica(int id) {
             Perfil perfil = perfilRepository.ReadById(id);
-            List<Permissao> permissoes = perfilPermissaoRepository.ReadByPerfil(perfil).Select(pp => pp.Permissao).ToList();
+            List<int> permissoesId = perfilPermissaoRepository.ReadByPerfil(perfil).Select(up => up.PermissaoId).ToList();
+
+            List<Permissao> permissoes = new();
+            foreach (int permissaoId in permissoesId) {
+                Permissao permissao = permissaoRepository.ReadById(permissaoId);
+                permissao.Sistema = sistemaRepository.ReadById(permissao.GetSistemaId());
+                permissoes.Add(permissao);
+            }
 
             ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao = new ModeloCadastroPerfilPermissao();
             modeloCadastroPerfilPermissao.Perfil = perfil;
@@ -66,14 +79,17 @@ namespace controle_de_permissoes.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Cadastro(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
+        public IActionResult Cadastrar([FromBody] ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
             try {
-                if (ModelState.IsValid) {
-                    perfilPermissaoRepository.Create(modeloCadastroPerfilPermissao);
-                    TempData["MensagemSucesso"] = "Perfil cadastrado com sucesso!";
-                    return RedirectToAction("ListagemEspecifica", modeloCadastroPerfilPermissao.Perfil.Id);
+                List<Permissao> permissoesSelecionadas = new();
+                foreach (int idPerfil in modeloCadastroPerfilPermissao.PermissoesSelecionadasIds) {
+                    permissoesSelecionadas.Add(permissaoRepository.ReadById(idPerfil));
                 }
-                return View(modeloCadastroPerfilPermissao);
+                modeloCadastroPerfilPermissao.setPermissoesSelecionadas(permissoesSelecionadas);
+                Console.WriteLine("teste dentro if cadastro post");
+                int id = perfilPermissaoRepository.Create(modeloCadastroPerfilPermissao);
+                TempData["MensagemSucesso"] = "Perfil cadastrado com sucesso!";
+                return Ok(id);
             } catch (Exception erro) {
                 TempData["MensagemErro"] = "Houve um erro no cadastro do perfil, entre em contato com o suporte." + erro.Message;
                 return RedirectToAction("Cadastrar");

@@ -88,7 +88,6 @@ namespace controle_de_permissoes.Controllers {
                     modeloCadastroUsuarioPerfil.setPerfisSelecionados(perfisSelecionados);
                     int id = usuarioPermissaoRepository.Create(modeloCadastroUsuarioPerfil);
                     TempData["MensagemSucesso"] = "Usuário cadastrado com sucesso!";
-                    //return View("ListagemEspecifica", modeloCadastroUsuarioPerfil);
                     return Ok(id);
                 }
                 return View(modeloCadastroUsuarioPerfil);

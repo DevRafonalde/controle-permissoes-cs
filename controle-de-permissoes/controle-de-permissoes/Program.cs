@@ -3,6 +3,7 @@ using controle_de_permissoes.Models.Repositories.Impl;
 using controle_de_permissoes.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +20,12 @@ builder.Services.AddScoped<PermissaoRepository, PermissaoRepositoryImpl>();
 builder.Services.AddScoped<SistemaRepository, SistemaRepositoryImpl>();
 builder.Services.AddScoped<UsuarioPermissaoRepository, UsuarioPermissaoRepositoryImpl>();
 builder.Services.AddScoped<UsuarioRepository, UsuarioRepositoryImpl>();
-//builder.Services.AddScoped<ISessao, Sessao>();
-//builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddSession(o => {
     o.Cookie.HttpOnly = true;
     o.Cookie.IsEssential = true;
 });
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false);
 
 var app = builder.Build();
 

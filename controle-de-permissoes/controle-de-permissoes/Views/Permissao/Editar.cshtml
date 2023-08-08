@@ -1,0 +1,71 @@
+﻿@using controle_de_permissoes.Models.Entities.View
+@model ModeloCadastroPermissao
+@{
+    ViewData["Title"] = "Cadastrar de novo Perfil";
+}
+
+<div class="container">
+    <h1 class="display-4">Cadastro de novo Perfil</h1>
+    @if (TempData["MensagemSucesso"] != null) {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check"></i>
+            <span><strong>@TempData["MensagemSucesso"]</strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null) {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-check"></i>
+            <span><strong>@TempData["MensagemErro"]</strong></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <form asp-controller="Permissao" asp-action="EditarBanco" method="post">
+        <input type="hidden" asp-for="Permissao.Id" />
+        <div class="row">
+            <div class="col-md-6">
+                <label for="nome" class="form-label">Nome:</label>
+                <input type="text" asp-for="Permissao.Nome" class="form-control" id="nome" placeholder="Digite o nome do perfil">
+            </div>
+            <div class="col-md-6">
+                <label for="descricao" class="form-label">Descrição:</label>
+                <input type="text" asp-for="Permissao.Descricao" class="form-control" id="descricao" placeholder="Digite uma descrição para o perfil">
+            </div>
+            <div class="col-md-6">
+                <label for="sistema-id" class="form-label">Sistema:</label>
+                <select asp-for="Permissao.SistemaId" class="form-select" id="sistema-id">
+                    <option disabled value="">Selecione...</option>
+                    @foreach (var sistema in Model.TodosSistemas) {
+                        if (Model.Permissao.SistemaId == sistema.Id) {
+                            <option selected value="@sistema.Id">@sistema.Nome</option>
+                        }
+                        <option value="@sistema.Id">@sistema.Nome</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="sistema-id" class="form-label">Permissão Superior:</label>
+                <select asp-for="Permissao.IdPermissaoSuperior" class="form-select" id="sistema-id">
+                    <option disabled value="">Selecione...</option>
+                    @foreach (var permissao in Model.TodasPermissoes) {
+                        if (Model.Permissao.IdPermissaoSuperior == permissao.Id) {
+                            <option selected value="@permissao.Id">@permissao.Nome</option>
+                        }
+                        <option value="@permissao.Id">@permissao.Nome</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="descricao" class="form-label">Mnemônico:</label>
+                <input type="text" asp-for="Permissao.Descricao" class="form-control" id="descricao" placeholder="Digite um mnemônico para a permissão">
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Adicionar</button>
+            <a class="btn btn-secondary" asp-controller="Permissao" asp-action="Index" role="button">Voltar</a>
+        </div>
+    </form>
+</div>

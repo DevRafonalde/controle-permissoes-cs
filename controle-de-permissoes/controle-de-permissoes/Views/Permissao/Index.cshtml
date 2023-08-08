@@ -6,7 +6,7 @@
 
 <div class="container text-center">
     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-        <a class="btn btn-primary" role="button" asp-controller="Perfil" asp-action="Cadastrar">Adicionar nova Permissão</a>
+        <a class="btn btn-primary" role="button" asp-controller="Permissao" asp-action="Cadastrar">Adicionar nova Permissão</a>
     </div>
     <br>
     @if (TempData["MensagemSucesso"] != null) {
@@ -38,16 +38,16 @@
         </thead>
         <tbody>
             @if (Model != null && Model.Any()) {
-                foreach (var perfil in Model) {
+                foreach (var permissao in Model) {
                     <tr>
-                        <th scope="row">@perfil.Id</th>
-                        <td><a></a> @perfil.GetSistema().Nome</td>
-                        <td><a></a> @perfil.Nome</td>
-                        <td><a></a> @perfil.Descricao</td>
+                        <th scope="row">@permissao.Id</th>
+                        <td><a></a> @permissao.GetSistema().Nome</td>
+                        <td><a></a> @permissao.Nome</td>
+                        <td><a></a> @permissao.Descricao</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Ações">
-                                <a role="button" class="btn btn-info btn-sm" asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="Editar"><i class="fa-solid fa-pencil"></i></a>
-                                <a role="button" class="btn btn-danger btn-sm" asp-route-id="@perfil.Id" asp-controller="Perfil" asp-action="ApagarConfirmacao"><i class="fa-regular fa-circle-xmark"></i></a>
+                                <a role="button" class="btn btn-info btn-sm" asp-route-id="@permissao.Id" asp-controller="Permissao" asp-action="Editar"><i class="fa-solid fa-pencil"></i></a>
+                                <a role="button" class="btn btn-danger btn-sm" asp-route-id="@permissao.Id" asp-controller="Permissao" asp-action="ApagarConfirmacao"><i class="fa-regular fa-circle-xmark"></i></a>
                             </div>
                         </td>
                     </tr>

@@ -34,6 +34,10 @@
             return Sistema;
         }
 
+        public void SetSistema(Sistema sistema) {
+            Sistema = sistema;
+        }
+
         public int GetSistemaId() {
             if (SistemaId == null) {
                 return 0;

@@ -21,24 +21,26 @@ namespace controle_de_permissoes.Controllers {
             List<Permissao> permissoes = permissaoRepository.ReadAll();
 
             foreach (Permissao permissao in permissoes) {
-                Sistema sistema = sistemaRepository.ReadById(permissao.Id);
-                permissao.Sistema = sistema;
+                Sistema sistema = sistemaRepository.ReadById(permissao.GetSistemaId());
+                permissao.SetSistema(sistema);
             }
 
             return View(permissoes);
         }
 
         // Página para o cadastro de novas permissoes
-        public IActionResult Cadastro() {
+        public IActionResult Cadastrar() {
             ModeloCadastroPermissao modeloCadastroPermissao = new ModeloCadastroPermissao();
-            modeloCadastroPermissao.todosSistemas = sistemaRepository.ReadAll();
+            modeloCadastroPermissao.TodosSistemas = sistemaRepository.ReadAll();
+            modeloCadastroPermissao.TodasPermissoes = permissaoRepository.ReadAll();
             return View(modeloCadastroPermissao);
         }
 
         // Página para a edição de permissoes existentes
-        public IActionResult Edicao(int id) {
+        public IActionResult Editar(int id) {
             ModeloCadastroPermissao modeloCadastroPermissao = new ModeloCadastroPermissao();
-            modeloCadastroPermissao.todosSistemas = sistemaRepository.ReadAll();
+            modeloCadastroPermissao.TodosSistemas = sistemaRepository.ReadAll();
+            modeloCadastroPermissao.TodasPermissoes = permissaoRepository.ReadAll();
             modeloCadastroPermissao.Permissao = permissaoRepository.ReadById(id);
             return View(modeloCadastroPermissao);
         }
@@ -50,8 +52,7 @@ namespace controle_de_permissoes.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Cadastro(ModeloCadastroPermissao modeloCadastroPermissao) {
-            Permissao permissao = modeloCadastroPermissao.Permissao;
+        public IActionResult Cadastrar(Permissao permissao) {
             try {
                 if (ModelState.IsValid) {
                     permissaoRepository.Create(permissao);
@@ -66,8 +67,8 @@ namespace controle_de_permissoes.Controllers {
         }
 
         [HttpPost]
-        public IActionResult EditarBanco(ModeloCadastroPermissao modeloCadastroPermissao) {
-            Permissao permissao = modeloCadastroPermissao.Permissao;
+        public IActionResult EditarBanco(Permissao permissao) {
+            //Permissao permissao = modeloCadastroPermissao.Permissao;
             try {
                 if (ModelState.IsValid) {
                     permissaoRepository.Update(permissao);

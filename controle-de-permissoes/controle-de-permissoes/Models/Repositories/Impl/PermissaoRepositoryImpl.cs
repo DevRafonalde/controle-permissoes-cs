@@ -38,13 +38,13 @@ namespace controle_de_permissoes.Models.Repositories.Impl
                 throw new Exception("Houve um erro ao encontrar a permissão a ser editada");
             }
 
-            List<Permissao> permissoes = ReadAll();
-            int ultimoId = permissoes.LastOrDefault().Id;
-            ultimoId++;
-            permissao.Desabilitado = false;
-            permissao.Id = ultimoId;
+            permissaoBanco.Nome = permissao.Nome;
+            permissaoBanco.Descricao = permissao.Descricao;
+            permissaoBanco.SistemaId = permissao.SistemaId;
+            permissaoBanco.IdPermissaoSuperior = permissao.IdPermissaoSuperior;
+            permissaoBanco.Mnemonico = permissao.Mnemonico;
 
-            bancoContext.tbl_Permissao.Add(permissao);
+            bancoContext.tbl_Permissao.Update(permissaoBanco);
             bancoContext.SaveChanges();
             return permissao;
         }
@@ -56,7 +56,7 @@ namespace controle_de_permissoes.Models.Repositories.Impl
                 throw new Exception("Houve um erro ao encontrar a permissão a ser excluída");
             }
 
-            bancoContext.tbl_Permissao.Remove(permissao);
+            bancoContext.tbl_Permissao.Remove(permissaoBanco);
             bancoContext.SaveChanges();
             return true;
         }

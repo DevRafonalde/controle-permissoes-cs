@@ -57,8 +57,7 @@ namespace controle_de_permissoes.Models.Repositories.Impl
 
         public int Update(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
             Perfil perfilMexido = modeloCadastroPerfilPermissao.Perfil;
-            perfilMexido.Excluido = false;
-            perfilMexido = perfilRepository.Update(perfilMexido);
+            perfilRepository.Update(perfilMexido);
             int idPerfil = perfilMexido.Id;
 
             List<PerfilPermissao> registrosExistentes = ReadByPerfil(perfilMexido);

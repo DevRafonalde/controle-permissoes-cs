@@ -39,7 +39,7 @@ namespace controle_de_permissoes.Models.Repositories.Impl
             perfilBanco.Descricao = perfil.Descricao;
             perfilBanco.Excluido = false;
 
-            bancoContext.tbl_Perfil.Add(perfilBanco);
+            bancoContext.tbl_Perfil.Update(perfilBanco);
             bancoContext.SaveChanges();
             return perfilBanco;
         }

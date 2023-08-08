@@ -250,4 +250,38 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#formulario-edicao-perfil').submit(function (event) {
+        event.preventDefault();
+
+        var listaPermissoesSelect = document.getElementsByClassName("permissao-selecionada");
+
+        for (var i = 0; i < listaPermissoesSelect.length; i++) {
+            listaPermissoesSelecionadas.push(listaPermissoesSelect[i].value);
+        }
+
+        var modeloCadastroPerfilPermissao = {
+            Perfil: {
+                Id: $('#id').val(),
+                Nome: $('#nome').val(),
+                Descricao: $('#descricao').val(),
+                SistemaId: $('#sistema-id').val()
+            },
+            PermissoesSelecionadasIds: listaPermissoesSelecionadas
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/Perfil/EditarBanco",
+            data: JSON.stringify(modeloCadastroPerfilPermissao),
+            contentType: "application/json",
+            success: function (response) {
+                console.log("Requisição bem sucedida: ", response);
+                window.location.replace("https://localhost:7225/Perfil/ListagemEspecifica/" + response);
+            },
+            error: function (error) {
+                console.log("Erro na requisição: ", error);
+            }
+        });
+    });
 });

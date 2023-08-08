@@ -40,9 +40,15 @@ namespace controle_de_permissoes.Controllers {
         }
 
         // Página para a edição de permissoes existentes
-        public IActionResult Edicao(int id) {
+        public IActionResult Editar(int id) {
             Perfil perfil = perfilRepository.ReadById(id);
-            List<Permissao> permissoes = perfilPermissaoRepository.ReadByPerfil(perfil).Select(pp => pp.Permissao).ToList();
+            List<int> permissoesId = perfilPermissaoRepository.ReadByPerfil(perfil).Select(up => up.PermissaoId).ToList();
+            List<Permissao> permissoes = new();
+            foreach (int permissaoId in permissoesId) {
+                Permissao permissao = permissaoRepository.ReadById(permissaoId);
+                permissao.Sistema = sistemaRepository.ReadById(permissao.GetSistemaId());
+                permissoes.Add(permissao);
+            }
 
             ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao = new ModeloCadastroPerfilPermissao();
             modeloCadastroPerfilPermissao.TodosSistemas = sistemaRepository.ReadAll();
@@ -53,7 +59,7 @@ namespace controle_de_permissoes.Controllers {
             return View(modeloCadastroPerfilPermissao);
         }
 
-        // Página para a listagem de permissões específica de cada perfil
+        // Página para a listagem de permissões específica de cada permissao
         public IActionResult ListagemEspecifica(int id) {
             Perfil perfil = perfilRepository.ReadById(id);
             List<int> permissoesId = perfilPermissaoRepository.ReadByPerfil(perfil).Select(up => up.PermissaoId).ToList();
@@ -86,27 +92,28 @@ namespace controle_de_permissoes.Controllers {
                     permissoesSelecionadas.Add(permissaoRepository.ReadById(idPerfil));
                 }
                 modeloCadastroPerfilPermissao.setPermissoesSelecionadas(permissoesSelecionadas);
-                Console.WriteLine("teste dentro if cadastro post");
                 int id = perfilPermissaoRepository.Create(modeloCadastroPerfilPermissao);
                 TempData["MensagemSucesso"] = "Perfil cadastrado com sucesso!";
                 return Ok(id);
             } catch (Exception erro) {
-                TempData["MensagemErro"] = "Houve um erro no cadastro do perfil, entre em contato com o suporte." + erro.Message;
+                TempData["MensagemErro"] = "Houve um erro no cadastro do permissao, entre em contato com o suporte." + erro.Message;
                 return RedirectToAction("Cadastrar");
             }
         }
 
         [HttpPost]
-        public IActionResult EditarBanco(ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
+        public IActionResult EditarBanco([FromBody] ModeloCadastroPerfilPermissao modeloCadastroPerfilPermissao) {
             try {
-                if (ModelState.IsValid) {
-                    perfilPermissaoRepository.Update(modeloCadastroPerfilPermissao);
-                    TempData["MensagemSucesso"] = "Perfil editado com sucesso!";
-                    return RedirectToAction("ListagemEspecifica", modeloCadastroPerfilPermissao.Perfil.Id);
+                List<Permissao> permissoesSelecionadas = new();
+                foreach (int idPerfil in modeloCadastroPerfilPermissao.PermissoesSelecionadasIds) {
+                    permissoesSelecionadas.Add(permissaoRepository.ReadById(idPerfil));
                 }
-                return View(modeloCadastroPerfilPermissao);
+                modeloCadastroPerfilPermissao.setPermissoesSelecionadas(permissoesSelecionadas);
+                int id = perfilPermissaoRepository.Update(modeloCadastroPerfilPermissao);
+                TempData["MensagemSucesso"] = "Perfil editado com sucesso!";
+                return Ok(id);
             } catch (Exception erro) {
-                TempData["MensagemErro"] = "Houve um erro na edição do perfil, entre em contato com o suporte. " + erro.Message;
+                TempData["MensagemErro"] = "Houve um erro na edição do permissao, entre em contato com o suporte. " + erro.Message;
                 return RedirectToAction("Cadastrar");
             }
         }
@@ -128,7 +135,7 @@ namespace controle_de_permissoes.Controllers {
                 TempData["MensagemSucesso"] = "Perfil excluído com sucesso!";
                 return RedirectToAction("Index");
             } catch (Exception erro) {
-                TempData["MensagemErro"] = "Houve um erro na exclusão do perfil, entre em contato com o suporte. " + erro.Message;
+                TempData["MensagemErro"] = "Houve um erro na exclusão do permissao, entre em contato com o suporte. " + erro.Message;
                 return RedirectToAction("Index");
             }
         }
